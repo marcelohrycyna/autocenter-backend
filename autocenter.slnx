@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="AUTOCENTER.CrosssCutting/AUTOCENTER.CrosssCutting.csproj" Id="2552df14-5227-4993-80a5-28e4287e6082" />
+  <Project Path="AUTOCENTER.Domain/AUTOCENTER.Domain.csproj" Id="4a18c233-aaf4-41a9-95a3-4349acc793fb" />
+  <Project Path="AUTOCENTER.Infra/AUTOCENTER.Infra.csproj" Id="2420dec7-5259-4745-acde-41cf95eabd08" />
+  <Project Path="AUTOCENTER.Service/AUTOCENTER.Service.csproj" Id="c9fbab31-9f43-4be4-8f7c-a11c2fcb5031" />
+  <Project Path="AUTOCENTER.Utils/AUTOCENTER.Utils.csproj" Id="577d0d85-ae30-40d4-a6cd-0257d617eef2" />
+  <Project Path="autocenter/AUTOCENTER.API/AUTOCENTER.API.csproj" Id="0481e42e-1a57-4bfa-aae6-a7366afe9573" />
+</Solution>

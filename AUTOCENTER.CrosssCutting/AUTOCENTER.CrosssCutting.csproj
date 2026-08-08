@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.9" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.9" />
+    <PackageReference Include="Scrutor" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AUTOCENTER.Infra\AUTOCENTER.Infra.csproj" />
+    <ProjectReference Include="..\AUTOCENTER.Service\AUTOCENTER.Service.csproj" />
+    <ProjectReference Include="..\AUTOCENTER.Utils\AUTOCENTER.Utils.csproj" />
+  </ItemGroup>
+
+</Project>
