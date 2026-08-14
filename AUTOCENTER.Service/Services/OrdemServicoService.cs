@@ -63,5 +63,12 @@ namespace AUTOCENTER.Service.Services
 
             return _mapper.Map<List<OrdemServicoDTO>>(oss);
         }
+
+        public async Task<List<OrdemServicoDTO>> GetByStatus(bool? status)
+        {
+            var oss = await _uow.OrdemServicoRepository.GetByStatus(status);
+
+            return _mapper.Map<List<OrdemServicoDTO>>(oss);
+        }
     }
 }

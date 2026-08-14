@@ -41,6 +41,13 @@ namespace autocenter.Controllers
             return oss;
         }
 
+        [HttpGet("status/{status?}")]
+        public async Task<List<OrdemServicoDTO>> GetByStatus(bool? status)
+        {
+            var oss = await _service.GetByStatus(status);
+            return oss;
+        }
+
         [HttpPost]
         public async Task<ActionResult<OrdemServicoDTO>> Create(OrdemServicoDTO os)
         {

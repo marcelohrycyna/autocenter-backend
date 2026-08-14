@@ -71,5 +71,24 @@ namespace AUTOCENTER.Infra.Repositories
                 throw new InvalidOperationException("Dados inválidos");
             }
         }
+
+        public async Task<List<OrdemServico>> GetByStatus(bool? status)
+        {
+            if (_context is not null)
+            {
+                return await _context.OrdemServicos
+                                     .Where(os => !status.HasValue || os.Fechado == status.Value)
+                                     .Include(e => e.Cliente)
+                                     .AsNoTracking()
+                                     .AsNoTracking()
+                                     .Include(ss => ss.OrdemServicoServicos)
+                                     .ThenInclude(s => s.Servico)
+                                     .ToListAsync();
+            }
+            else
+            {
+                throw new InvalidOperationException("Dados inválidos");
+            }
+        }
     }
 }
