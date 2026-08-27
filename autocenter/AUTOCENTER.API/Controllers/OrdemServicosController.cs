@@ -9,10 +9,12 @@ namespace autocenter.Controllers
     public class OrdemServicosController : ControllerBase
     {
         private readonly IOrdemServicoService _service;
+        private readonly IOrdemServicoPdfService _servicePdf;
 
-        public OrdemServicosController(IOrdemServicoService service)
+        public OrdemServicosController(IOrdemServicoService service, IOrdemServicoPdfService servicePdf)
         {
             _service = service;
+            _servicePdf = servicePdf;
         }
 
         [HttpGet(Name = "GetOrdemServicos")]
@@ -88,6 +90,20 @@ namespace autocenter.Controllers
             {
                 return BadRequest(new { message = e.Message, id });
             }
+        }
+
+        [HttpGet("pdf/{id}")]
+        public async Task<FileStreamResult> GerarPdf(int id)
+        {
+            var files = await _servicePdf.GerarPdf(id);
+            var file = (await _servicePdf.GerarPdf(id)).FirstOrDefault();
+            
+            
+            var ms = file.OpenReadStream();
+            return new FileStreamResult(ms, "application/pdf")
+            {
+                FileDownloadName = file.FileName
+            };
         }
     }
 }
