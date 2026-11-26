@@ -18,7 +18,7 @@ namespace AUTOCENTER.Service.DTOs
 
         [MaxLength(1000)]
         [JsonPropertyName("observacao")]
-        public string Observacao { get; set; }
+        public string? Observacao { get; set; }
 
         [Required]
         [JsonPropertyName("fechado")]
@@ -45,7 +45,7 @@ namespace AUTOCENTER.Service.DTOs
         {
         }
 
-        public OrdemServicoDTO(int id, DateOnly dataEntrada, DateOnly? dataSaida, string observacao, bool fechado, int clienteId, int automovelId, Cliente? cliente, List<OrdemServicoServicoDTO?> servicos)
+        public OrdemServicoDTO(int id, DateOnly dataEntrada, DateOnly? dataSaida, string? observacao, bool fechado, int clienteId, int automovelId, Cliente? cliente, List<OrdemServicoServicoDTO?> servicos)
         {
             Id = id;
             DataEntrada = dataEntrada;

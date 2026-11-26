@@ -1,5 +1,5 @@
 ﻿using AUTOCENTER.Service.DTOs;
-using AUTOCENTER.Service.Interfaces;
+using AUTOCENTER.Service.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace autocenter.Controllers
@@ -10,11 +10,17 @@ namespace autocenter.Controllers
     {
         private readonly IOrdemServicoService _service;
         private readonly IOrdemServicoPdfService _servicePdf;
+        private readonly IOrdemServicoEmailService _serviceEmail;
 
-        public OrdemServicosController(IOrdemServicoService service, IOrdemServicoPdfService servicePdf)
+        // DTO para facilitar o recebimento dos ids de cliente e Ordem de Servico
+        public record EnviarEmailRequest(int ClienteId, int OsId);
+
+
+        public OrdemServicosController(IOrdemServicoService service, IOrdemServicoPdfService servicePdf, IOrdemServicoEmailService serviceEmail)
         {
             _service = service;
             _servicePdf = servicePdf;
+            _serviceEmail = serviceEmail;
         }
 
         [HttpGet(Name = "GetOrdemServicos")]
@@ -95,15 +101,25 @@ namespace autocenter.Controllers
         [HttpGet("pdf/{id}")]
         public async Task<FileStreamResult> GerarPdf(int id)
         {
-            var files = await _servicePdf.GerarPdf(id);
             var file = (await _servicePdf.GerarPdf(id)).FirstOrDefault();
-            
             
             var ms = file.OpenReadStream();
             return new FileStreamResult(ms, "application/pdf")
             {
                 FileDownloadName = file.FileName
             };
+        }
+
+        [HttpPost("email")]
+        public async Task<IActionResult> EnviarEmail([FromBody] EnviarEmailRequest request)
+        {
+            if (request.ClienteId <= 0 || request.OsId <= 0)
+            {
+                return BadRequest("Os campos ClienteId e OsId são obrigatórios e devem ser maiores que zero.");
+            }
+
+            var result = await _serviceEmail.EnviarEmail(request.ClienteId, request.OsId);
+            return Ok(result);
         }
     }
 }

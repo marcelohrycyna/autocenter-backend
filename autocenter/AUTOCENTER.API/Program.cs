@@ -1,4 +1,5 @@
 using AUTOCENTER.CrosssCutting.DependenciesApp;
+using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,13 @@ builder.Services.AddCors(options =>
               .AllowAnyHeader();
     });
 });
+
+builder.Services.AddHttpClient("EmailServiceClient", client =>
+{
+    var baseUrl = builder.Configuration["EmailServiceSettings:BaseUrl"] ?? "http://localhost:5001";
+    client.BaseAddress = new Uri(baseUrl);
+});
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 // Swagger / OpenAPI
 builder.Services.AddEndpointsApiExplorer();

@@ -1,6 +1,6 @@
 ﻿using AUTOCENTER.Infra.Repositories.Interfaces;
 using AUTOCENTER.Service.DTOs;
-using AUTOCENTER.Service.Interfaces;
+using AUTOCENTER.Service.Services.Interfaces;
 using AUTOCENTER.Utils.DependencyInjectionAttributes.ServiceLifeTimeAttributes;
 using AutoMapper;
 

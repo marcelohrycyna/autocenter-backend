@@ -23,9 +23,9 @@ namespace AUTOCENTER.Service.Services
         protected float _tamanhoDaFonteCabecalho = 24F;
         protected float _tamanhoDaFonteCabecalhoDados = 14F;
         protected float _espacoCaracter = 0.5F;
-        protected MemoryStream _memoryStream;
-        protected PdfDocument _pdfDoc;
-        protected Document _documento;
+        protected MemoryStream? _memoryStream;
+        protected PdfDocument? _pdfDoc;
+        protected Document? _documento;
         protected readonly LineSeparator _linhaSeparadora = new(new SolidLine());
 
         protected PdfBaseService() { }
@@ -53,16 +53,21 @@ namespace AUTOCENTER.Service.Services
 
         protected virtual void FecharDocumento()
         {
-            _documento.Close();
+            _documento?.Close();
 
-            byte[] byteInfo = _memoryStream.ToArray();
-
-            _memoryStream.Write(byteInfo, 0, byteInfo.Length);
-            _memoryStream.Position = 0;
+            if (_memoryStream != null)
+            {
+                _memoryStream.Position = 0;
+            }
         }
 
         protected virtual IFormFile ObterArquivo(string nomeDoArquivo)
         {
+            if (_memoryStream == null)
+            {
+                throw new ArgumentNullException(nameof(_memoryStream), "O fluxo do PDF não pode ser nulo.");
+            }
+
             var fsAquivo = new FileStreamResult(_memoryStream, "application/pdf")
             {
                 FileDownloadName = nomeDoArquivo
@@ -79,7 +84,7 @@ namespace AUTOCENTER.Service.Services
 
         protected virtual void AdicionarLinhaSeparadora()
         {
-            _documento.Add(_linhaSeparadora);
+            _documento?.Add(_linhaSeparadora);
         }
 
         protected virtual Table CriarCabecalhoPadrao()//string titulo, string empresaNome, string empresaCor, int numeroDeLinhas)
@@ -207,9 +212,12 @@ namespace AUTOCENTER.Service.Services
 
         protected virtual void Dispose(bool invocarDispose)
         {
-            ((IDisposable)_memoryStream)?.Dispose();
-            ((IDisposable)_pdfDoc)?.Dispose();
-            ((IDisposable)_documento)?.Dispose();
+            if (invocarDispose)
+            {
+                (_memoryStream as IDisposable)?.Dispose();
+                (_pdfDoc as IDisposable)?.Dispose();
+                (_documento as IDisposable)?.Dispose();
+            }
         }
 
         protected static Image CriarImagem(string caminho, float fitWidth, float fitHeight)

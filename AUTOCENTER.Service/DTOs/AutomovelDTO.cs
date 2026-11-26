@@ -12,23 +12,23 @@ namespace AUTOCENTER.Service.DTOs
         [Required]
         [MaxLength(100)]
         [JsonPropertyName("modelo")]
-        public string Modelo { get; set; }
+        public string? Modelo { get; set; }
 
         [MaxLength(100)]
         [JsonPropertyName("marca")]
-        public string Marca { get; set; }
+        public string? Marca { get; set; }
 
         [MaxLength(4)]
         [JsonPropertyName("ano")]
-        public string Ano { get; set; }
+        public string? Ano { get; set; }
 
         [MaxLength(50)]
         [JsonPropertyName("cor")]
-        public string Cor { get; set; }
+        public string? Cor { get; set; }
 
         [MaxLength(10)]
         [JsonPropertyName("placa")]
-        public string Placa { get; set; }
+        public string? Placa { get; set; }
 
         [Required]
         [JsonPropertyName("clienteId")]
@@ -42,7 +42,7 @@ namespace AUTOCENTER.Service.DTOs
         {
         }
 
-        public AutomovelDTO(int id, string modelo, string marca, string ano, string cor, string placa, int clienteId, Cliente? cliente)
+        public AutomovelDTO(int id, string? modelo, string? marca, string? ano, string? cor, string? placa, int clienteId, Cliente? cliente)
         {
             Id = id;
             Modelo = modelo;

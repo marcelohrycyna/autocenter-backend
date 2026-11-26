@@ -8,10 +8,10 @@ namespace AUTOCENTER.Service.DTOs
         public int Id { get; set; }
 
         [JsonPropertyName("nome")]
-        public string Nome { get; set; }
+        public string? Nome { get; set; }
 
         [JsonPropertyName("sigla")]
-        public string Sigla { get; set; }
+        public string? Sigla { get; set; }
 
         
 
@@ -19,7 +19,7 @@ namespace AUTOCENTER.Service.DTOs
         {
         }
 
-        public PaisDTO(int id, string nome, string sigla)
+        public PaisDTO(int id, string? nome, string? sigla)
         {
             Id = id;
             Nome = nome;

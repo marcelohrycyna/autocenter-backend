@@ -1,5 +1,5 @@
 ﻿using AUTOCENTER.Service.DTOs;
-using AUTOCENTER.Service.Interfaces;
+using AUTOCENTER.Service.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace autocenter.Controllers

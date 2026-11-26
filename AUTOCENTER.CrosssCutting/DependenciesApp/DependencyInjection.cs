@@ -1,12 +1,9 @@
 ﻿using AUTOCENTER.Service.AutoMapper;
-using AUTOCENTER.Service.Interfaces;
-using AUTOCENTER.Service.Services;
 using AUTOCENTER.Utils.DependencyInjectionAttributes.ServiceLifeTimeAttributes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-
 
 namespace AUTOCENTER.CrosssCutting.DependenciesApp
 {

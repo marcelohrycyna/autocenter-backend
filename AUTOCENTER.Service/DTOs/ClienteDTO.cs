@@ -12,39 +12,39 @@ namespace AUTOCENTER.Service.DTOs
         [Required]
         [MaxLength(150)]
         [JsonPropertyName("nome")]
-        public string Nome { get; set; }
+        public string? Nome { get; set; }
 
         [MaxLength(150)]
         [JsonPropertyName("rua")]
-        public string Rua { get; set; }
+        public string? Rua { get; set; }
 
         [MaxLength(150)]
         [JsonPropertyName("numero")]
-        public string Numero { get; set; }
+        public string? Numero { get; set; }
 
         [MaxLength(50)]
         [JsonPropertyName("cep")]
-        public string Cep { get; set; }
+        public string? Cep { get; set; }
 
         [MaxLength(100)]
         [JsonPropertyName("bairro")]
-        public string Bairro { get; set; }
+        public string? Bairro { get; set; }
 
         [MaxLength(150)]
         [JsonPropertyName("complemento")]
-        public string Complemento { get; set; }
+        public string? Complemento { get; set; }
 
         [MaxLength(200)]
         [JsonPropertyName("email")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         [MaxLength(50)]
         [JsonPropertyName("cpf")]
-        public string Cpf { get; set; }
+        public string? Cpf { get; set; }
 
         [MaxLength(50)]
         [JsonPropertyName("telefone")]
-        public string Telefone { get; set; }
+        public string? Telefone { get; set; }
 
         [Required]
         [JsonPropertyName("cidadeId")]
@@ -58,7 +58,7 @@ namespace AUTOCENTER.Service.DTOs
         {
         }
 
-        public ClienteDTO(int id, string nome, string rua, string numero, string cep, string bairro, string complemento, string email, string cpf, string telefone, int cidadeId, Cidade? cidade)
+        public ClienteDTO(int id, string? nome, string? rua, string? numero, string? cep, string? bairro, string? complemento, string? email, string? cpf, string? telefone, int cidadeId, Cidade? cidade)
         {
             Id = id;
             Nome = nome;

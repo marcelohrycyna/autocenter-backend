@@ -12,7 +12,7 @@ namespace AUTOCENTER.Service.DTOs
         [Required]
         [MaxLength(200)]
         [JsonPropertyName("nome")]
-        public string Nome { get; set; }
+        public string? Nome { get; set; }
 
         [Required]
         [JsonPropertyName("estadoId")]
@@ -26,7 +26,7 @@ namespace AUTOCENTER.Service.DTOs
         {
         }
 
-        public CidadeDTO(int id, string nome, int estadoId, Estado? estado)
+        public CidadeDTO(int id, string? nome, int estadoId, Estado? estado)
         {
             Id = id;
             Nome = nome;

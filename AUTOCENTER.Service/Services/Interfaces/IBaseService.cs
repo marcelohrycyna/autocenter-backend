@@ -1,6 +1,6 @@
 ﻿using AUTOCENTER.Domain.Models;
 
-namespace AUTOCENTER.Service.Interfaces
+namespace AUTOCENTER.Service.Services.Interfaces
 {
     public interface IBaseService<T> where T : BaseModel
     {

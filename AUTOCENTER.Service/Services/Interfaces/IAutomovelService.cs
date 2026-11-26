@@ -1,6 +1,6 @@
 ﻿using AUTOCENTER.Service.DTOs;
 
-namespace AUTOCENTER.Service.Interfaces
+namespace AUTOCENTER.Service.Services.Interfaces
 {
     public interface IAutomovelService : IBaseDTOService<AutomovelDTO>
     {

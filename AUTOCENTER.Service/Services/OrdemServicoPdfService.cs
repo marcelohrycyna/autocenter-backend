@@ -1,13 +1,12 @@
 ﻿using AUTOCENTER.Infra.Repositories.Interfaces;
-using AUTOCENTER.Service.Interfaces;
+using AUTOCENTER.Service.Services.Interfaces;
 using AUTOCENTER.Utils;
 using AUTOCENTER.Utils.DependencyInjectionAttributes.ServiceLifeTimeAttributes;
 using AutoMapper;
 using iText.Kernel.Pdf.Canvas.Draw;
 using iText.Layout.Element;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.Extensions.Logging;
 
 namespace AUTOCENTER.Service.Services
 {
@@ -16,60 +15,92 @@ namespace AUTOCENTER.Service.Services
     {
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
+        private readonly ILogger<OrdemServicoPdfService> _logger; 
 
         LineSeparator ls = new LineSeparator(new SolidLine());
 
-
-        public OrdemServicoPdfService(IUnitOfWork unitOfWork, IMapper mapper)
+        public OrdemServicoPdfService(
+            IUnitOfWork unitOfWork,
+            IMapper mapper,
+            ILogger<OrdemServicoPdfService> logger)
         {
             _uow = unitOfWork;
             _mapper = mapper;
+            _logger = logger;
         }
 
-        public async Task<IFormFileCollection> GerarPdf(int id)
+        public async Task<IFormFileCollection> GerarPdf(int osId)
+        {
+            _logger.LogInformation("Iniciando a geração do PDF para a Ordem de Serviço ID: {Id}", osId);
+            var os = await GetOs(osId);
+
+            var formfile = await CriarPdf(os);
+            return formfile;
+        }
+
+        private async Task<OrdemServico> GetOs(int id)
         {
             var os = await _uow.OrdemServicoRepository.Get(id);
+            return os;
+        }
+
+
+        private async Task<IFormFileCollection> CriarPdf(OrdemServico os)
+        {
             CriarDocumento();
 
-            _documento.Add(CriarCabecalhoPadrao());
-            _documento.Add(ls);
+            _documento?.Add(CriarCabecalhoPadrao());
+            _documento?.Add(ls);
 
-            _documento.Add(CriarSubCabecalhoPadrao(StringResource.TextoSubCabecalhoOrdemServicoPdf(os.Id.ToString())));
-            _documento.Add(ls);
+            _documento?.Add(CriarSubCabecalhoPadrao(StringResource.TextoSubCabecalhoOrdemServicoPdf(os.Id.ToString())));
+            _documento?.Add(ls);
 
             if (os.Cliente is not null)
             {
-                _documento.Add(CriarClientePadrao(os.Cliente));
+                _documento?.Add(CriarClientePadrao(os.Cliente));
             }
-            _documento.Add(ls);
+            _documento?.Add(ls);
 
             if (os.Automovel is not null)
             {
-                _documento.Add(CriarAutomovelPadrao(os.Automovel));
+                _documento?.Add(CriarAutomovelPadrao(os.Automovel));
             }
-            _documento.Add(ls);
+            _documento?.Add(ls);
 
-            _documento.Add(CriarSubCabecalhoPadrao(StringResource.Servicos));
-            _documento.Add(ls);
+            _documento?.Add(CriarSubCabecalhoPadrao(StringResource.Servicos));
+            _documento?.Add(ls);
 
             {
-                _documento.Add(CriarTabelaServicos(os.OrdemServicoServicos));
+                _documento?.Add(CriarTabelaServicos(os.OrdemServicoServicos));
             }
 
             FecharDocumento();
 
-            FileStreamResult fileStreamResult = new FileStreamResult(_memoryStream, "application/pdf");
+            // Garanta que a sua MemoryStream original volte para a posição zero para ser lida por completo
+            if (_memoryStream!.CanSeek)
+            {
+                _memoryStream.Position = 0;
+            }
 
-            fileStreamResult.FileDownloadName = "OrdemServico.pdf";
-            var formFile = new FormFile(fileStreamResult.FileStream, 0, fileStreamResult.FileStream.Length, "fileStreamAta", fileStreamResult.FileDownloadName);
-            
+            // Crie o FormFile diretamente a partir do _memoryStream
+            var formFile = new FormFile(
+                baseStream: _memoryStream,
+                baseStreamOffset: 0,
+                length: _memoryStream.Length,
+                name: "Files",
+                fileName: "OrdemServico.pdf"
+            )
+            {
+                Headers = new HeaderDictionary(),
+                ContentType = "application/pdf"
+            };
+
             var formFileCollection = new FormFileCollection();
             formFileCollection.Add(formFile);
-            
+
             return formFileCollection;
         }
 
-        
         private Table CriarTabelaServicos(ICollection<OrdemServicoServico> ordemServicoServicos)
         {
             var tabServicos = CriarTabelaPadrao(4);
@@ -82,7 +113,7 @@ namespace AUTOCENTER.Service.Services
                 {
                     PreencherServicoNaTabelaServicos(tabServicos, servico);
                 }
-                
+
                 tabServicos.AddCell(CriarCelulaEmBrancoPadrao(4));
                 PreencherValorTotalNaTabelaServicos(tabServicos, ordemServicoServicos.Sum(p => p.ValorTotal));
             }
